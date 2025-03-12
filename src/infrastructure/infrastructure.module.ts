@@ -5,6 +5,8 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProductEntity } from "./adapters/database/entities/product.entity";
 import { databaseConfig } from "./adapters/database/database.config";
 import { CreateProductUsecase } from "../application/use-case/create.product.use-case";
+import { FilterProductController } from "./adapters/web/controllers/filter.product.controller";
+import { FilterProductUsecase } from "../application/use-case/filter.product.use-case";
 
 @Module({
     imports: [
@@ -12,7 +14,8 @@ import { CreateProductUsecase } from "../application/use-case/create.product.use
         TypeOrmModule.forFeature([ProductEntity])
     ],
     controllers: [
-        CreateProductController
+        CreateProductController,
+        FilterProductController
     ],
     providers: [
         ProductRepository,
@@ -20,6 +23,11 @@ import { CreateProductUsecase } from "../application/use-case/create.product.use
         {
             provide: CreateProductUsecase,
             useFactory: (repository: ProductRepository) => new CreateProductUsecase(repository),
+            inject: [ProductRepository]
+        },
+        {
+            provide: FilterProductUsecase,
+            useFactory: (repository: ProductRepository) => new FilterProductUsecase(repository),
             inject: [ProductRepository]
         }
     ]

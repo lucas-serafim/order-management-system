@@ -1,12 +1,5 @@
 import { randomUUID } from "node:crypto";
-
-interface ProductImpl {
-    id?: string;
-    name: string;
-    description: string;
-    price: number;
-    stock: number;
-}
+import { ProductImpl } from "../interfaces/product.interface";
 
 export class Product {
 

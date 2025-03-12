@@ -3,15 +3,16 @@ import { CreateProductUsecase } from "../../create.product.use-case";
 
 const MockRepository = () => {
     return {
-        create: jest.fn()
+        create: jest.fn(),
+        filter: jest.fn()
     }
 }
 
 describe("Unit test create product use case", () => {
+    const productRepository = MockRepository(); 
 
     it("should create a product", async () => {
-        const productRepository = MockRepository();
-        const productCreateUseCase = new CreateProductUsecase(productRepository);
+        const createProductUsecase = new CreateProductUsecase(productRepository);
 
         const input: InputCreateProductDto = {
             name: "integration test - creating a product",
@@ -20,7 +21,7 @@ describe("Unit test create product use case", () => {
             stock: 12
         }
 
-        const output = await productCreateUseCase.execute(input);
+        const output = await createProductUsecase.execute(input);
 
         expect(output).toEqual({
             id: expect.any(String),
@@ -29,5 +30,5 @@ describe("Unit test create product use case", () => {
             price: input.price,
             stock: input.stock
         });
-    })
+    });
 });
