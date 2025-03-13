@@ -1,5 +1,5 @@
 import { Product } from "../../../../../domain/entities/product.entity";
-import { InputFilterProductDto } from "../../../../dtos/filter.product.dto";
+import { InputFilterProductDto } from "../../../../dtos/product/filter.product.dto";
 import { FilterProductUsecase } from "../../../product/filter.product.use-case";
 
 const MockRepository = () => {

@@ -6,7 +6,7 @@ import { ProductRepositoryPort } from "../../../../domain/ports/product.port";
 import { Product } from "../../../../domain/entities/product.entity";
 import { ProductFilterImpl } from "../../../../domain/interfaces/product.find-all.interface";
 import { ProductMapper } from "../mappers/product.mapper";
-import { OutputFilterProductDto } from "../../../../application/dtos/filter.product.dto";
+import { OutputFilterProductDto } from "../../../../application/dtos/product/filter.product.dto";
 
 @Injectable()
 export class ProductRepository implements ProductRepositoryPort {

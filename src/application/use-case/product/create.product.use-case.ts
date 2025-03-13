@@ -1,6 +1,6 @@
 import { Product } from "../../../domain/entities/product.entity";
 import { ProductRepositoryPort } from "../../../domain/ports/product.port";
-import { InputCreateProductDto, OutputCreateProductDto } from "../../dtos/create.product.dto";
+import { InputCreateProductDto, OutputCreateProductDto } from "../../dtos/product/create.product.dto";
 
 
 export class CreateProductUsecase {

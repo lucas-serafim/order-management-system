@@ -1,11 +1,11 @@
 import { Module } from "@nestjs/common";
-import { CreateProductController } from "./adapters/web/controllers/create.product.controller";
+import { CreateProductController } from "./adapters/web/controllers/product/create.product.controller";
 import { ProductRepository } from "./adapters/database/repositories/product.repository";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ProductEntity } from "./adapters/database/entities/product.entity";
 import { databaseConfig } from "./adapters/database/database.config";
 import { CreateProductUsecase } from "../application/use-case/product/create.product.use-case";
-import { FilterProductController } from "./adapters/web/controllers/filter.product.controller";
+import { FilterProductController } from "./adapters/web/controllers/product/filter.product.controller";
 import { FilterProductUsecase } from "../application/use-case/product/filter.product.use-case";
 import { CreateOrderController } from "./adapters/web/controllers/order/create.order.controller";
 import { OrderEntity } from "./adapters/database/entities/order.entity";

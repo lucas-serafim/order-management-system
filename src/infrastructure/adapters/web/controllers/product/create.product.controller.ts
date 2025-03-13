@@ -1,7 +1,7 @@
 import { Body, Controller, HttpCode, Post } from "@nestjs/common";
-import { CreateProductDto } from "../dtos/create.product.dto";
-import { CreateProductUsecase } from "../../../../application/use-case/product/create.product.use-case";
-import { OutputCreateProductDto } from "../../../../application/dtos/create.product.dto";
+import { CreateProductDto } from "../../dtos/product/create.product.dto";
+import { CreateProductUsecase } from "../../../../../application/use-case/product/create.product.use-case";
+import { OutputCreateProductDto } from "../../../../../application/dtos/product/create.product.dto";
 
 @Controller("products")
 export class CreateProductController {

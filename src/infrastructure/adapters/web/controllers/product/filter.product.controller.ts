@@ -1,7 +1,7 @@
 import { Controller, Get, HttpCode, Query } from "@nestjs/common";
-import { FilterProductUsecase } from "../../../../application/use-case/product/filter.product.use-case";
-import { FilterProductDto } from "../dtos/filter.product.dto";
-import { OutputFilterProductDto } from "../../../../application/dtos/filter.product.dto";
+import { FilterProductUsecase } from "../../../../../application/use-case/product/filter.product.use-case";
+import { FilterProductDto } from "../../dtos/product/filter.product.dto";
+import { OutputFilterProductDto } from "../../../../../application/dtos/product/filter.product.dto";
 
 @Controller("products")
 export class FilterProductController {

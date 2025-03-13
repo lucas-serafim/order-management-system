@@ -1,4 +1,4 @@
-import { OutputFilterProductDto } from "../../application/dtos/filter.product.dto";
+import { OutputFilterProductDto } from "../../application/dtos/product/filter.product.dto";
 import { Product } from "../entities/product.entity";
 import { ProductFilterImpl } from "../interfaces/product.find-all.interface";
 

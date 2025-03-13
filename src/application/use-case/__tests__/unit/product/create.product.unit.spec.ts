@@ -1,4 +1,4 @@
-import { InputCreateProductDto } from "../../../../dtos/create.product.dto";
+import { InputCreateProductDto } from "../../../../dtos/product/create.product.dto";
 import { CreateProductUsecase } from "../../../product/create.product.use-case";
 
 const MockRepository = () => {
