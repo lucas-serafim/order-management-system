@@ -3,6 +3,7 @@ import { OrderStatusEnum } from "../enums/order-status.enum";
 import { Product } from "./product.entity";
 
 interface OrderImpl {
+    id?: string;
     customerId: string;
     items: Array<Product>;
 }
@@ -18,10 +19,9 @@ export class Order {
     private updatedAt: string;
 
     constructor(params: OrderImpl) {
+        this.id = params.id ?? randomUUID();
         this.customerId = params.customerId;
         this.items = params.items;
-
-        this.id = randomUUID();
         this.status = OrderStatusEnum.pending;
         this.createdAt = new Date().toISOString();
         this.updatedAt =  new Date().toISOString();
@@ -51,6 +51,34 @@ export class Order {
         }
 
         this.status = OrderStatusEnum.cancelled;
+    }
+
+    getId() {
+        return this.id;
+    }
+
+    getCustomerId() {
+        return this.customerId;
+    }
+
+    getItems() {
+        return this.items;
+    }
+
+    getTotalAmount() {
+        return this.totalAmount;
+    }
+
+    getStatus() {
+        return this.status;
+    }
+
+    getCreatedAt() {
+        return this.createdAt;
+    }
+
+    getUpdatedAt() {
+        return this.updatedAt;
     }
 
     private setTotalAmount() {

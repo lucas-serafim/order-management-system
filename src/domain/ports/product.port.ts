@@ -7,4 +7,6 @@ export interface ProductRepositoryPort {
     create(product: Product): Promise<void>;
 
     filter(params: ProductFilterImpl): Promise<OutputFilterProductDto>;
+
+    getByid(productId: string): Promise<Product>;
 }

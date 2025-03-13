@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
 import { InjectRepository } from "@nestjs/typeorm";
@@ -43,5 +43,18 @@ export class ProductRepository implements ProductRepositoryPort {
             pageSize,
             total
         };
+    }
+
+    async getByid(productId: string): Promise<Product> {
+        const response = await this.repository.findOne({
+            where: {
+                id: productId
+            }
+        });
+
+        if (!response)
+            throw new NotFoundException(`Product not found. Product id: ${productId}`)
+
+        return ProductMapper.toDomain(response);
     }
 }

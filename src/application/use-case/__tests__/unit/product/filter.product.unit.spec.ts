@@ -1,11 +1,12 @@
-import { Product } from "../../../../domain/entities/product.entity";
-import { InputFilterProductDto } from "../../../dtos/filter.product.dto";
-import { FilterProductUsecase } from "../../filter.product.use-case";
+import { Product } from "../../../../../domain/entities/product.entity";
+import { InputFilterProductDto } from "../../../../dtos/filter.product.dto";
+import { FilterProductUsecase } from "../../../product/filter.product.use-case";
 
 const MockRepository = () => {
     return {
         create: jest.fn(),
-        filter: jest.fn()
+        filter: jest.fn(),
+        getByid: jest.fn()
     }
 }
 

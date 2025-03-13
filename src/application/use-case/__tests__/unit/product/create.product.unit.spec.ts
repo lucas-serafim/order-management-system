@@ -1,10 +1,11 @@
-import { InputCreateProductDto } from "../../../dtos/create.product.dto";
-import { CreateProductUsecase } from "../../create.product.use-case";
+import { InputCreateProductDto } from "../../../../dtos/create.product.dto";
+import { CreateProductUsecase } from "../../../product/create.product.use-case";
 
 const MockRepository = () => {
     return {
         create: jest.fn(),
-        filter: jest.fn()
+        filter: jest.fn(),
+        getByid: jest.fn()
     }
 }
 

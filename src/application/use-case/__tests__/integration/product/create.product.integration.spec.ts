@@ -2,10 +2,10 @@ import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { DataSource } from "typeorm";
 
-import { ProductEntity } from "../../../../infrastructure/adapters/database/entities/product.entity";
-import { ProductRepository } from "../../../../infrastructure/adapters/database/repositories/product.repository";
-import { CreateProductUsecase } from "../../create.product.use-case";
-import { InputCreateProductDto } from "../../../dtos/create.product.dto";
+import { ProductEntity } from "../../../../../infrastructure/adapters/database/entities/product.entity";
+import { ProductRepository } from "../../../../../infrastructure/adapters/database/repositories/product.repository";
+import { CreateProductUsecase } from "../../../product/create.product.use-case";
+import { InputCreateProductDto } from "../../../../dtos/create.product.dto";
 
 describe("Integration test create product use case", () => {
     let createProductUsecase: CreateProductUsecase;

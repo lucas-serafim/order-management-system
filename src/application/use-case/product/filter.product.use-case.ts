@@ -1,6 +1,6 @@
-import { Product } from "../../domain/entities/product.entity";
-import { ProductRepositoryPort } from "../../domain/ports/product.port";
-import { InputFilterProductDto, OutputFilterProductDto } from "../dtos/filter.product.dto";
+import { Product } from "../../../domain/entities/product.entity";
+import { ProductRepositoryPort } from "../../../domain/ports/product.port";
+import { InputFilterProductDto, OutputFilterProductDto } from "../../dtos/filter.product.dto";
 
 export class FilterProductUsecase {
     
