@@ -8,7 +8,7 @@ import { ProductFilterImpl } from "../../../../domain/interfaces/product.find-al
 import { ProductMapper } from "../mappers/product.mapper";
 import { OutputFilterProductDto } from "../../../../application/dtos/product/filter.product.dto";
 
-@Injectable()
+
 export class ProductRepository implements ProductRepositoryPort {
     constructor(
         @InjectRepository(ProductEntity) private readonly repository: Repository<ProductEntity>

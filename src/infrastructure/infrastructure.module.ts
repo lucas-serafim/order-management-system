@@ -11,24 +11,32 @@ import { CreateOrderController } from "./adapters/web/controllers/order/create.o
 import { OrderEntity } from "./adapters/database/entities/order.entity";
 import { OrderRepository } from "./adapters/database/repositories/order.repository";
 import { CreateOrderUsecase } from "../application/use-case/order/create.order.use-case";
+import { CreateCustomerController } from "./adapters/web/controllers/customer/create.customer.controller";
+import { CustomerRepository } from "./adapters/database/repositories/customer.repository";
+import { CreateCustomerUsecase } from "../application/use-case/customer/create.customer.use-case";
+import { CustomerEntity } from "./adapters/database/entities/customer.entity";
 
 @Module({
     imports: [
         TypeOrmModule.forRoot(databaseConfig),
         TypeOrmModule.forFeature([
             ProductEntity,
-            OrderEntity
+            OrderEntity,
+            CustomerEntity
         ])
     ],
     controllers: [
         CreateProductController,
         FilterProductController,
 
-        CreateOrderController
+        CreateOrderController,
+
+        CreateCustomerController
     ],
     providers: [
         ProductRepository,
         OrderRepository,
+        CustomerRepository,
 
         {
             provide: CreateProductUsecase,
@@ -47,6 +55,12 @@ import { CreateOrderUsecase } from "../application/use-case/order/create.order.u
                 return new CreateOrderUsecase(orderRepository, productRepository)
             },
             inject: [OrderRepository, ProductRepository]
+        },
+
+        {
+            provide: CreateCustomerUsecase,
+            useFactory: (repository: CustomerRepository) => new CreateCustomerUsecase(repository),
+            inject: [CustomerRepository]
         }
     ]
 })

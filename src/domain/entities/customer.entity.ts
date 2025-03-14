@@ -1,11 +1,5 @@
 import { randomUUID } from "node:crypto";
-
-interface CustomerImpl {
-    name: string;
-    email: string;
-    phone: string;
-    address: string;
-}
+import { CustomerImpl } from "../interfaces/customer.interface";
 
 export class Customer {
 
@@ -16,11 +10,30 @@ export class Customer {
     private address: string;
 
     constructor(params: CustomerImpl) {
+        this.id = params.id ?? randomUUID();
         this.name = params.name;
         this.email = params.email;
         this.phone = params.phone;
         this.address = params.address;
-
-        this.id = randomUUID();
     };
+
+    getId() {
+        return this.id;
+    }
+
+    getName() {
+        return this.name;
+    }
+
+    getEmail() {
+        return this.email;
+    }
+
+    getPhone() {
+        return this.phone;
+    }
+
+    getAddress() {
+        return this.address;
+    }
 }

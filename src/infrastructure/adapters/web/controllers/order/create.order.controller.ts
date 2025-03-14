@@ -1,6 +1,6 @@
 import { Body, Controller, HttpCode, Post } from "@nestjs/common";
 import { CreateOrderUsecase } from "../../../../../application/use-case/order/create.order.use-case";
-import { OutputCreateOrderDto } from "../../../../../application/dtos/order/order.dto";
+import { OutputCreateOrderDto } from "../../../../../application/dtos/order/create.order.dto";
 import { CreateOrderDto } from "../../dtos/order/create.order.dto";
 
 @Controller("orders")

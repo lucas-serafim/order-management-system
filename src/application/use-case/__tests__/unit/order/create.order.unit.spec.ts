@@ -1,5 +1,5 @@
 import { Product } from "../../../../../domain/entities/product.entity";
-import { InputCreateOrderDto } from "../../../../dtos/order/order.dto";
+import { InputCreateOrderDto } from "../../../../dtos/order/create.order.dto";
 import { CreateOrderUsecase } from "../../../order/create.order.use-case";
 
 const OrderMockRepository = () => {

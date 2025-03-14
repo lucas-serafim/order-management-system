@@ -3,7 +3,7 @@ import { Order } from "../../../domain/entities/order.entity";
 import { Product } from "../../../domain/entities/product.entity";
 import { OrderRepositoryPort } from "../../../domain/ports/order.port";
 import { ProductRepositoryPort } from "../../../domain/ports/product.port";
-import { InputCreateOrderDto, OutputCreateOrderDto } from "../../dtos/order/order.dto";
+import { InputCreateOrderDto, OutputCreateOrderDto } from "../../dtos/order/create.order.dto";
 
 export class CreateOrderUsecase {
 
