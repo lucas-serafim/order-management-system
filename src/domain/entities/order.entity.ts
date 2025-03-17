@@ -1,12 +1,8 @@
 import { randomUUID } from "node:crypto";
 import { OrderStatusEnum } from "../enums/order-status.enum";
 import { Product } from "./product.entity";
+import { OrderImpl } from "../interfaces/order.interface";
 
-interface OrderImpl {
-    id?: string;
-    customerId: string;
-    items: Array<Product>;
-}
 
 export class Order {
 

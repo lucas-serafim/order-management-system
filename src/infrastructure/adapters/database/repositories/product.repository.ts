@@ -4,9 +4,9 @@ import { ProductEntity } from "../entities/product.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductRepositoryPort } from "../../../../domain/ports/product.port";
 import { Product } from "../../../../domain/entities/product.entity";
-import { ProductFilterImpl } from "../../../../domain/interfaces/product.find-all.interface";
 import { ProductMapper } from "../mappers/product.mapper";
 import { OutputFilterProductDto } from "../../../../application/dtos/product/filter.product.dto";
+import { ProductFilterImpl } from "../../../../domain/interfaces/product.interface";
 
 
 export class ProductRepository implements ProductRepositoryPort {

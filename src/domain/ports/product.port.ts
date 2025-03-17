@@ -1,6 +1,6 @@
 import { OutputFilterProductDto } from "../../application/dtos/product/filter.product.dto";
 import { Product } from "../entities/product.entity";
-import { ProductFilterImpl } from "../interfaces/product.find-all.interface";
+import { ProductFilterImpl } from "../interfaces/product.interface";
 
 export interface ProductRepositoryPort {
     
