@@ -1,4 +1,4 @@
-import { CreateCustomerUsecase } from "../../../customer/create.customer.use-case";
+import { CreateCustomerUsecase } from "../../customer/create.customer.use-case";
 
 const MockRepository = () => {
     return {

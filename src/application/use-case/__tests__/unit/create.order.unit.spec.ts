@@ -1,6 +1,7 @@
-import { Product } from "../../../../../domain/entities/product.entity";
-import { InputCreateOrderDto } from "../../../../dtos/order/create.order.dto";
-import { CreateOrderUsecase } from "../../../order/create.order.use-case";
+import { Customer } from "../../../../domain/entities/customer.entity";
+import { Product } from "../../../../domain/entities/product.entity";
+import { InputCreateOrderDto } from "../../../dtos/order/create.order.dto";
+import { CreateOrderUsecase } from "../../order/create.order.use-case";
 
 const OrderMockRepository = () => {
     return {
@@ -23,6 +24,13 @@ describe("Unit test create order use case", () => {
     it("should create a order", async () => {
         const createOrderUsecase = new CreateOrderUsecase(orderRepository, productRepository);
         
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        })
+
         const product = new Product({
             name: "tv",
             description: "tv",
@@ -35,7 +43,7 @@ describe("Unit test create order use case", () => {
         // TODO: create a customer
 
         const input: InputCreateOrderDto = {
-            customerId: "12967195-7347-4ae8-ac44-c67f60c614bd",
+            customerId: customer.getId(),
             items: [
                 {
                     id: product.getId()
