@@ -24,7 +24,7 @@ const CustomerMockRepository = () => {
     }
 }
 
-describe("Unit test create order use case", () => {
+describe("Unit test order use cases", () => {
     const orderRepository = OrderMockRepository();
     const productRepository = ProductMockRepository();
     const customerRepository = CustomerMockRepository();

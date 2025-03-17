@@ -2,11 +2,12 @@ import { CreateCustomerUsecase } from "../../customer/create.customer.use-case";
 
 const MockRepository = () => {
     return {
-        create: jest.fn()
+        create: jest.fn(),
+        getById: jest.fn()
     }
 }
 
-describe("Unit test create customer use case", () => {
+describe("Unit test customer use cases", () => {
     const customerRepository = MockRepository();
 
     it("should create a customer", async () => {
