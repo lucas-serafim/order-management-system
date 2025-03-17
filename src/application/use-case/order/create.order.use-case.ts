@@ -4,26 +4,30 @@ import { Product } from "../../../domain/entities/product.entity";
 import { OrderRepositoryPort } from "../../../domain/ports/order.port";
 import { ProductRepositoryPort } from "../../../domain/ports/product.port";
 import { InputCreateOrderDto, OutputCreateOrderDto } from "../../dtos/order/create.order.dto";
+import { CustomerRepositoryPort } from "../../../domain/ports/customer.port";
 
 export class CreateOrderUsecase {
 
     constructor(
         private readonly orderRepository: OrderRepositoryPort,
-        private readonly productRepository: ProductRepositoryPort
+        private readonly productRepository: ProductRepositoryPort,
+        private readonly customerRepository: CustomerRepositoryPort
     ) { };
 
     async execute(params: InputCreateOrderDto): Promise<OutputCreateOrderDto> {
+
+        await this.customerRepository.getById(params.customerId);
 
         const products: Product[] = [];
         const errors: string[] = [];
 
         for (const item of params.items) {
-            await this.productRepository.getByid(item.id)
+            await this.productRepository.getById(item.id)
                 .then((response) => products.push(response))
                 .catch((error) => errors.push(error));
         }
 
-        if (errors.length) throw new BadRequestException(errors)
+        if (errors.length) throw new BadRequestException(errors);
 
         const orderParams = {
             customerId: params.customerId,

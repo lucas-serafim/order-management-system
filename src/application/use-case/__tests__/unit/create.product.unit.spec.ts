@@ -8,7 +8,7 @@ const MockRepository = () => {
     return {
         create: jest.fn(),
         filter: jest.fn(),
-        getByid: jest.fn()
+        getById: jest.fn()
     }
 }
 

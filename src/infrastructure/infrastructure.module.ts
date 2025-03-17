@@ -51,10 +51,10 @@ import { CustomerEntity } from "./adapters/database/entities/customer.entity";
 
         {
             provide: CreateOrderUsecase,
-            useFactory: (orderRepository: OrderRepository, productRepository: ProductRepository) => {
-                return new CreateOrderUsecase(orderRepository, productRepository)
+            useFactory: (orderRepository: OrderRepository, productRepository: ProductRepository, customerRepository: CustomerRepository) => {
+                return new CreateOrderUsecase(orderRepository, productRepository, customerRepository)
             },
-            inject: [OrderRepository, ProductRepository]
+            inject: [OrderRepository, ProductRepository, CustomerRepository]
         },
 
         {

@@ -45,7 +45,7 @@ export class ProductRepository implements ProductRepositoryPort {
         };
     }
 
-    async getByid(productId: string): Promise<Product> {
+    async getById(productId: string): Promise<Product> {
         const response = await this.repository.findOne({
             where: {
                 id: productId

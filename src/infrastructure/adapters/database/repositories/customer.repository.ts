@@ -3,6 +3,8 @@ import { Customer } from "../../../../domain/entities/customer.entity";
 import { CustomerRepositoryPort } from "../../../../domain/ports/customer.port";
 import { CustomerEntity } from "../entities/customer.entity";
 import { InjectRepository } from "@nestjs/typeorm";
+import { NotFoundException } from "@nestjs/common";
+import { CustomerMapper } from "../mappers/customer.mapper";
 
 export class CustomerRepository implements CustomerRepositoryPort {
 
@@ -11,7 +13,6 @@ export class CustomerRepository implements CustomerRepositoryPort {
     ) { };
 
     async create(customer: Customer): Promise<void> {
-
         const input = {
             id: customer.getId(),
             name: customer.getName(),
@@ -21,5 +22,18 @@ export class CustomerRepository implements CustomerRepositoryPort {
         }
 
         await this.repository.save(input);
+    }
+
+    async getById(customerId: string): Promise<Customer> {
+        const response = await this.repository.findOne({
+            where: {
+                id: customerId
+            }
+        });
+
+        if (!response)
+            throw new NotFoundException(`Customer not found. Customer id: ${customerId}`);
+
+        return CustomerMapper.toDomain(response);
     }
 }

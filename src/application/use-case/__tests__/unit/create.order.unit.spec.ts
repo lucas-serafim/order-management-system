@@ -13,23 +13,34 @@ const ProductMockRepository = () => {
     return {
         create: jest.fn(),
         filter: jest.fn(),
-        getByid: jest.fn()
+        getById: jest.fn()
+    }
+}
+
+const CustomerMockRepository = () => {
+    return {
+        create: jest.fn(),
+        getById: jest.fn()
     }
 }
 
 describe("Unit test create order use case", () => {
     const orderRepository = OrderMockRepository();
     const productRepository = ProductMockRepository();
+    const customerRepository = CustomerMockRepository();
+
 
     it("should create a order", async () => {
-        const createOrderUsecase = new CreateOrderUsecase(orderRepository, productRepository);
+        const createOrderUsecase = new CreateOrderUsecase(orderRepository, productRepository, customerRepository);
         
         const customer = new Customer({
             name: "joao",
             email: "joao@joao.com",
             phone: "1199999999",
             address: "rua do joao numero 110"
-        })
+        });
+
+        customerRepository.getById.mockResolvedValue(customer);
 
         const product = new Product({
             name: "tv",
@@ -38,9 +49,7 @@ describe("Unit test create order use case", () => {
             stock: 12
         });
 
-        productRepository.getByid.mockResolvedValue(product)
-
-        // TODO: create a customer
+        productRepository.getById.mockResolvedValue(product);
 
         const input: InputCreateOrderDto = {
             customerId: customer.getId(),
@@ -54,7 +63,7 @@ describe("Unit test create order use case", () => {
         const output = await createOrderUsecase.execute(input);
 
         expect(output.customerId).toBe(input.customerId);
-        expect(output.items).toHaveLength(1)
-        expect(output.status).toBe("PENDING")
+        expect(output.items).toHaveLength(1);
+        expect(output.status).toBe("PENDING");
     })
 });
