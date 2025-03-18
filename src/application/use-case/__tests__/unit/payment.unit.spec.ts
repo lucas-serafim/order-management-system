@@ -4,17 +4,25 @@ import { Product } from "../../../../domain/entities/product.entity";
 import { PaymentMethodEnum } from "../../../../domain/enums/payment-method.enum";
 import { CreatePaymentUsecase } from "../../payment/create.payment.use-case";
 
-const MockRepository = () => {
+const PaymentMockRepository = () => {
     return {
         create: jest.fn()
     }
 }
 
+const OrderMockRepository = () => {
+    return {
+        create: jest.fn(),
+        getById: jest.fn()
+    }
+}
+
 describe("Unit test payment use cases", () => {
-    const paymentRepository = MockRepository();
+    const paymentRepository = PaymentMockRepository();
+    const orderRepository = OrderMockRepository();
 
     it("should create a payment", async () => {
-        const createPaymentUsecase = new CreatePaymentUsecase(paymentRepository);
+        const createPaymentUsecase = new CreatePaymentUsecase(paymentRepository, orderRepository);
 
         const customer = new Customer({
             name: "joao",
@@ -35,7 +43,9 @@ describe("Unit test payment use cases", () => {
             items: [
                 product
             ]
-        })
+        });
+
+        orderRepository.getById.mockResolvedValue(order);
 
         const input = {
             orderId: order.getId(),

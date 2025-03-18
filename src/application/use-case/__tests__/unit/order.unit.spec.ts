@@ -5,7 +5,8 @@ import { CreateOrderUsecase } from "../../order/create.order.use-case";
 
 const OrderMockRepository = () => {
     return {
-        create: jest.fn()
+        create: jest.fn(),
+        getById: jest.fn()
     }
 }
 

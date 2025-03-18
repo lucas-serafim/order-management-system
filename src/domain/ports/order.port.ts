@@ -4,9 +4,5 @@ export interface OrderRepositoryPort {
 
     create(order: Order): Promise<void>;
 
-    // updateStatus(): Promise<any>;
-
-    // cancel(): Promise<any>;
-
-    // findByCustomerId(): Promise<any>;
+    getById(orderId: string): Promise<Order>;
 }
