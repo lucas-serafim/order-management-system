@@ -1,4 +1,6 @@
+import { Customer } from "../../../../domain/entities/customer.entity";
 import { CreateCustomerUsecase } from "../../customer/create.customer.use-case";
+import { GetByIdCustomerUsecase } from "../../customer/get-by-id.customer.use-case";
 
 const MockRepository = () => {
     return {
@@ -30,4 +32,27 @@ describe("Unit test customer use cases", () => {
             address: input.address
         })
     });
+
+    it("should get a customer by id", async () => {
+        const getByIdCustomerUsecase = new GetByIdCustomerUsecase(customerRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        customerRepository.getById.mockResolvedValue(customer);
+
+        const output = await getByIdCustomerUsecase.execute(customer.getId());
+
+        expect(output).toEqual({
+            id: customer.getId(),
+            name: customer.getName(),
+            email: customer.getEmail(),
+            phone: customer.getPhone(),
+            address: customer.getAddress(),
+        });
+    })
 }); 
