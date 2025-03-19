@@ -19,6 +19,8 @@ import { CreatePaymentController } from "./adapters/web/controllers/payment/crea
 import { PaymentRepository } from "./adapters/database/repositories/payment.repository";
 import { CreatePaymentUsecase } from "../application/use-case/payment/create.payment.use-case";
 import { PaymentEntity } from "./adapters/database/entities/payment.entity";
+import { GetByIdCustomerController } from "./adapters/web/controllers/customer/get-by-id.customer.controller";
+import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-id.customer.use-case";
 
 @Module({
     imports: [
@@ -37,6 +39,7 @@ import { PaymentEntity } from "./adapters/database/entities/payment.entity";
         CreateOrderController,
 
         CreateCustomerController,
+        GetByIdCustomerController,
 
         CreatePaymentController
     ],
@@ -70,6 +73,12 @@ import { PaymentEntity } from "./adapters/database/entities/payment.entity";
             useFactory: (repository: CustomerRepository) => new CreateCustomerUsecase(repository),
             inject: [CustomerRepository]
         },
+        {
+            provide: GetByIdCustomerUsecase,
+            useFactory: (repository: CustomerRepository) => new GetByIdCustomerUsecase(repository),
+            inject: [CustomerRepository]
+        },
+
 
         {
             provide: CreatePaymentUsecase,
