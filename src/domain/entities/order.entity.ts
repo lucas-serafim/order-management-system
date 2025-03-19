@@ -8,7 +8,7 @@ export class Order {
 
     private id: string;
     private customerId: string;
-    private items: Array<Product>;
+    private items: Product[];
     private totalAmount: number;
     private status: OrderStatusEnum;
     private createdAt: string;
@@ -17,13 +17,16 @@ export class Order {
     constructor(params: OrderImpl) {
         this.id = params.id ?? randomUUID();
         this.customerId = params.customerId;
-        this.items = params.items;
+        this.items = [];
         this.status = OrderStatusEnum.pending;
         this.createdAt = new Date().toISOString();
         this.updatedAt =  new Date().toISOString();
-
-        this.setTotalAmount();
     };
+
+    addProduct(product: Product) {
+        this.items.push(product);
+        this.setTotalAmount();
+    }
 
     pay() {
         if (this.status !== OrderStatusEnum.pending) {
@@ -78,12 +81,6 @@ export class Order {
     }
 
     private setTotalAmount() {
-        let totalAmount: number = 0;
-
-        this.items.forEach((current) => {
-            totalAmount += current.getPrice()
-        });
-
-        this.totalAmount = totalAmount;
+        this.totalAmount = this.items.reduce((sum, item) => sum + item.getPrice(), 0);
     }
 }

@@ -39,11 +39,10 @@ describe("Unit test payment use cases", () => {
         });
 
         const order = new Order({
-            customerId: customer.getId(),
-            items: [
-                product
-            ]
+            customerId: customer.getId()
         });
+
+        order.addProduct(product);
 
         orderRepository.getById.mockResolvedValue(order);
 

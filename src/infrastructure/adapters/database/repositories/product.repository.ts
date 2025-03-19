@@ -15,15 +15,8 @@ export class ProductRepository implements ProductRepositoryPort {
     ) { };
 
     async create(product: Product): Promise<void> {
-        const params = {
-            id: product.getId(),
-            name: product.getName(),
-            description: product.getDescription(),
-            price: product.getPrice(),
-            stock: product.getStock()
-        }
-
-        await this.repository.save(params);
+        const input = ProductMapper.toOrmEntity(product)
+        await this.repository.save(input);
     }
 
     async filter(params: ProductFilterImpl): Promise<OutputFilterProductDto> {

@@ -16,9 +16,9 @@ describe("Unit test payment", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         const payment = new Payment({
             orderId: order.getId(),
@@ -40,9 +40,9 @@ describe("Unit test payment", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         const payment = new Payment({
             orderId: order.getId(),
@@ -64,9 +64,9 @@ describe("Unit test payment", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         const payment = new Payment({
             orderId: order.getId(),
@@ -87,9 +87,9 @@ describe("Unit test payment", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         const payment = new Payment({
             orderId: order.getId(),

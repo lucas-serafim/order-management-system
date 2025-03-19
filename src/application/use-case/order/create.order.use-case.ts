@@ -18,23 +18,19 @@ export class CreateOrderUsecase {
 
         await this.customerRepository.getById(params.customerId);
 
-        const products: Product[] = [];
+        const order = new Order({
+            customerId: params.customerId
+        });
+
         const errors: string[] = [];
 
         for (const item of params.items) {
             await this.productRepository.getById(item.id)
-                .then((response) => products.push(response))
+                .then((response) => order.addProduct(response))
                 .catch((error) => errors.push(error));
         }
 
         if (errors.length) throw new BadRequestException(errors);
-
-        const orderParams = {
-            customerId: params.customerId,
-            items: products
-        }
-
-        const order = new Order(orderParams);
 
         await this.orderRepository.create(order);
 

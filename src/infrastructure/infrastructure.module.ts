@@ -15,6 +15,10 @@ import { CreateCustomerController } from "./adapters/web/controllers/customer/cr
 import { CustomerRepository } from "./adapters/database/repositories/customer.repository";
 import { CreateCustomerUsecase } from "../application/use-case/customer/create.customer.use-case";
 import { CustomerEntity } from "./adapters/database/entities/customer.entity";
+import { CreatePaymentController } from "./adapters/web/controllers/payment/create.payment.controller";
+import { PaymentRepository } from "./adapters/database/repositories/payment.repository";
+import { CreatePaymentUsecase } from "../application/use-case/payment/create.payment.use-case";
+import { PaymentEntity } from "./adapters/database/entities/payment.entity";
 
 @Module({
     imports: [
@@ -22,7 +26,8 @@ import { CustomerEntity } from "./adapters/database/entities/customer.entity";
         TypeOrmModule.forFeature([
             ProductEntity,
             OrderEntity,
-            CustomerEntity
+            CustomerEntity,
+            PaymentEntity
         ])
     ],
     controllers: [
@@ -31,12 +36,15 @@ import { CustomerEntity } from "./adapters/database/entities/customer.entity";
 
         CreateOrderController,
 
-        CreateCustomerController
+        CreateCustomerController,
+
+        CreatePaymentController
     ],
     providers: [
         ProductRepository,
         OrderRepository,
         CustomerRepository,
+        PaymentRepository,
 
         {
             provide: CreateProductUsecase,
@@ -61,6 +69,12 @@ import { CustomerEntity } from "./adapters/database/entities/customer.entity";
             provide: CreateCustomerUsecase,
             useFactory: (repository: CustomerRepository) => new CreateCustomerUsecase(repository),
             inject: [CustomerRepository]
+        },
+
+        {
+            provide: CreatePaymentUsecase,
+            useFactory: (paymentRepository: PaymentRepository, orderRepository: OrderRepository) => new CreatePaymentUsecase(paymentRepository, orderRepository),
+            inject: [PaymentRepository, OrderRepository]
         }
     ]
 })

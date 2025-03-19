@@ -13,9 +13,9 @@ describe("Order unit tests", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         order.pay();
         order.cancel();
@@ -32,9 +32,9 @@ describe("Order unit tests", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         expect(() => order.ship()).toThrow("Only paid orders can be shipped");
     });
@@ -48,9 +48,9 @@ describe("Order unit tests", () => {
         });
 
         const order = new Order({
-            customerId: randomUUID(),
-            items: [product]
+            customerId: randomUUID()
         });
+        order.addProduct(product);
 
         order.pay();
         order.ship();

@@ -11,7 +11,7 @@ export class CreatePaymentUsecase {
     ) { };
 
     async execute(params: InputCreatePaymentDto): Promise<OutputCreatePaymentDto> {
-        await this.orderRepository.getById(params.orderId);
+       await this.orderRepository.getById(params.orderId);
 
         const payment = new Payment(params);
 

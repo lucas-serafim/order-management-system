@@ -13,16 +13,7 @@ export class OrderRepository implements OrderRepositoryPort {
     ) { };
 
     async create(order: Order): Promise<void> {
-        const input = {
-            id: order.getId(),
-            customerId: order.getCustomerId(),
-            items: order.getItems(),
-            totalAmount: order.getTotalAmount(),
-            status: order.getStatus(),
-            createdAt: order.getCreatedAt(),
-            updatedAt: order.getUpdatedAt()
-        }
-
+        const input = OrderMapper.toOrmEntity(order)
         await this.repository.save(input);
     }
 

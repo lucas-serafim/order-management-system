@@ -1,6 +1,6 @@
-import { Column, Entity, PrimaryColumn } from "typeorm";
-import { Product } from "../../../../domain/entities/product.entity";
+import { Column, Entity, OneToMany, PrimaryColumn } from "typeorm";
 import { OrderStatusEnum } from "../../../../domain/enums/order-status.enum";
+import { ProductEntity } from "./product.entity";
 
 @Entity("orders")
 export class OrderEntity {
@@ -12,7 +12,7 @@ export class OrderEntity {
     customerId: string;
 
     @Column("json")
-    items: Array<Product>;
+    items: ProductEntity[];
 
     @Column("float")
     totalAmount: number;
