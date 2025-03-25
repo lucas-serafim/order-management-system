@@ -1,12 +1,15 @@
 import { Customer } from "../../../../domain/entities/customer.entity";
+import { Order } from "../../../../domain/entities/order.entity";
 import { Product } from "../../../../domain/entities/product.entity";
 import { InputCreateOrderDto } from "../../../dtos/order/create.order.dto";
+import { CancelOrderUsecase } from "../../order/cancel.order.use-case";
 import { CreateOrderUsecase } from "../../order/create.order.use-case";
 
 const OrderMockRepository = () => {
     return {
         create: jest.fn(),
-        getById: jest.fn()
+        getById: jest.fn(),
+        cancel: jest.fn()
     }
 }
 
@@ -21,7 +24,8 @@ const ProductMockRepository = () => {
 const CustomerMockRepository = () => {
     return {
         create: jest.fn(),
-        getById: jest.fn()
+        getById: jest.fn(),
+        update: jest.fn()
     }
 }
 
@@ -67,4 +71,67 @@ describe("Unit test order use cases", () => {
         expect(output.items).toHaveLength(1);
         expect(output.status).toBe("PENDING");
     })
+
+    it("should cancel a order", async () => {
+        const cancelOrderUsecase = new CancelOrderUsecase(orderRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+        order.addProduct(product);
+        
+        orderRepository.getById.mockResolvedValue(order);
+
+        const output = await cancelOrderUsecase.execute({
+            orderId: order.getId()
+        });
+
+        expect(output.status).toBe("CANCELLED");
+    });
+
+    it("should throw an error when try to cancel a order", async () => {
+        const cancelOrderUsecase = new CancelOrderUsecase(orderRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+
+        order.addProduct(product);
+        order.pay();
+        order.ship();
+        
+        orderRepository.getById.mockResolvedValue(order);
+
+        expect(async () => await cancelOrderUsecase.execute({
+            orderId: order.getId()
+        })).rejects.toThrow("Only shipped or delivered orders cannot be cancelled")
+    });
 });
