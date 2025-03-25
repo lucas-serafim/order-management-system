@@ -36,4 +36,17 @@ export class CustomerRepository implements CustomerRepositoryPort {
 
         return CustomerMapper.toDomain(response);
     }
+
+    async update(customer: Customer): Promise<void> {
+        const updateData = {
+            name: customer.getName(),
+            email: customer.getEmail(),
+            phone: customer.getPhone(),
+            address: customer.getAddress()
+        }
+
+        await this.repository.update({
+            id: customer.getId()
+        }, updateData);
+    }
 }

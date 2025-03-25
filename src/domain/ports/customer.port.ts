@@ -6,5 +6,5 @@ export interface CustomerRepositoryPort {
 
     getById(customerId: string): Promise<Customer>;
 
-    update(customer: Customer): Promise<Customer>;
+    update(customer: Customer): Promise<void>;
 }
