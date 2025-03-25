@@ -4,6 +4,7 @@ import { Product } from "../../../../domain/entities/product.entity";
 import { InputCreateOrderDto } from "../../../dtos/order/create.order.dto";
 import { CancelOrderUsecase } from "../../order/cancel.order.use-case";
 import { CreateOrderUsecase } from "../../order/create.order.use-case";
+import { GetByIdOrderUsecase } from "../../order/get-by-id.order.use-case";
 
 const OrderMockRepository = () => {
     return {
@@ -37,7 +38,7 @@ describe("Unit test order use cases", () => {
 
     it("should create a order", async () => {
         const createOrderUsecase = new CreateOrderUsecase(orderRepository, productRepository, customerRepository);
-        
+
         const customer = new Customer({
             name: "joao",
             email: "joao@joao.com",
@@ -93,12 +94,10 @@ describe("Unit test order use cases", () => {
             customerId: customer.getId()
         });
         order.addProduct(product);
-        
+
         orderRepository.getById.mockResolvedValue(order);
 
-        const output = await cancelOrderUsecase.execute({
-            orderId: order.getId()
-        });
+        const output = await cancelOrderUsecase.execute(order.getId());
 
         expect(output.status).toBe("CANCELLED");
     });
@@ -127,11 +126,46 @@ describe("Unit test order use cases", () => {
         order.addProduct(product);
         order.pay();
         order.ship();
-        
+
         orderRepository.getById.mockResolvedValue(order);
 
-        expect(async () => await cancelOrderUsecase.execute({
-            orderId: order.getId()
-        })).rejects.toThrow("Only shipped or delivered orders cannot be cancelled")
+        expect(async () => await cancelOrderUsecase.execute(order.getId())).rejects.toThrow("Only shipped or delivered orders cannot be cancelled")
+    });
+
+    it("should get order by id", async () => {
+        const getByIdOrderUsecase = new GetByIdOrderUsecase(orderRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+        order.addProduct(product);
+
+        orderRepository.getById.mockResolvedValue(order);
+
+        const output = await getByIdOrderUsecase.execute(order.getId());
+
+        expect(output).toEqual({
+            id: order.getId(),
+            customerId: order.getCustomerId(),
+            items: order.getItems(),
+            totalAmount: order.getTotalAmount(),
+            status: order.getStatus(),
+            createdAt: order.getCreatedAt(),
+            updatedAt: order.getUpdatedAt()
+        });
     });
 });
