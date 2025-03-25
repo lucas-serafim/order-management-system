@@ -18,9 +18,9 @@ export class Order {
         this.id = params.id ?? randomUUID();
         this.customerId = params.customerId;
         this.items = [];
-        this.status = OrderStatusEnum.pending;
-        this.createdAt = new Date().toISOString();
-        this.updatedAt =  new Date().toISOString();
+        this.status = OrderStatusEnum[params.status?.toLowerCase() as keyof typeof OrderStatusEnum] ?? OrderStatusEnum.pending;
+        this.createdAt = params.createdAt ?? new Date().toISOString();
+        this.updatedAt =  params.updatedAt ?? new Date().toISOString();
     };
 
     addProduct(product: Product) {

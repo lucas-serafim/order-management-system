@@ -10,7 +10,7 @@ export class GetByIdCustomerController {
 
     @Get("/:customerId")
     @HttpCode(200)
-    async create(@Param("customerId", new ParseUUIDPipe()) customerId: string): Promise<OutputGetByIdCustomerDto> {
+    async getById(@Param("customerId", new ParseUUIDPipe()) customerId: string): Promise<OutputGetByIdCustomerDto> {
         return await this.getByIdCustomerUsecase.execute(customerId);
     }
 }
