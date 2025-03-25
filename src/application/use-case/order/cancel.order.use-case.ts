@@ -1,5 +1,5 @@
 import { OrderRepositoryPort } from "../../../domain/ports/order.port";
-import { InputCancelOrderDto, OutputCancelOrderDto } from "../../dtos/order/cancel.order.dto";
+import { OutputCancelOrderDto } from "../../dtos/order/cancel.order.dto";
 
 export class CancelOrderUsecase {
 
@@ -7,11 +7,11 @@ export class CancelOrderUsecase {
         private readonly orderRepository: OrderRepositoryPort
     ) { };
 
-    async execute(params: InputCancelOrderDto): Promise<OutputCancelOrderDto> {
-        const order = await this.orderRepository.getById(params.orderId);
+    async execute(orderId: string): Promise<OutputCancelOrderDto> {
+        const order = await this.orderRepository.getById(orderId);
         order.cancel();
 
-        await this.orderRepository.cancel(order.getId());
+        await this.orderRepository.cancel(order);
 
         return new OutputCancelOrderDto(order);
     }

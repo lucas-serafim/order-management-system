@@ -29,4 +29,12 @@ export class OrderRepository implements OrderRepositoryPort {
 
         return OrderMapper.toDomain(response);
     }
+
+    async cancel(order: Order): Promise<void> {
+        const status = order.getStatus();
+
+        await this.repository.update({
+            id: order.getId()
+        }, { status });
+    }
 }

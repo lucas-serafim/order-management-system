@@ -2,11 +2,6 @@ import { Order } from "../../../domain/entities/order.entity";
 import { Product } from "../../../domain/entities/product.entity";
 import { OrderStatusEnum } from "../../../domain/enums/order-status.enum";
 
-export interface InputCancelOrderDto {
-    orderId: string;
-}
-
-
 export class  OutputCancelOrderDto {
     id: string;
     customerId: string;

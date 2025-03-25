@@ -6,5 +6,5 @@ export interface OrderRepositoryPort {
 
     getById(orderId: string): Promise<Order>;
 
-    cancel(orderId: string): Promise<Order>;
+    cancel(order: Order): Promise<void>;
 }

@@ -21,6 +21,10 @@ import { CreatePaymentUsecase } from "../application/use-case/payment/create.pay
 import { PaymentEntity } from "./adapters/database/entities/payment.entity";
 import { GetByIdCustomerController } from "./adapters/web/controllers/customer/get-by-id.customer.controller";
 import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-id.customer.use-case";
+import { UpdateCustomerController } from "./adapters/web/controllers/customer/update.customer.controller";
+import { UpdateCustomerUsecase } from "../application/use-case/customer/update.customer.use-case";
+import { CancelOrderUsecase } from "../application/use-case/order/cancel.order.use-case";
+import { CancelOrderController } from "./adapters/web/controllers/order/cancel.order.controller";
 
 @Module({
     imports: [
@@ -37,9 +41,11 @@ import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-
         FilterProductController,
 
         CreateOrderController,
+        CancelOrderController,
 
         CreateCustomerController,
         GetByIdCustomerController,
+        UpdateCustomerController,
 
         CreatePaymentController
     ],
@@ -49,6 +55,7 @@ import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-
         CustomerRepository,
         PaymentRepository,
 
+        // Products
         {
             provide: CreateProductUsecase,
             useFactory: (repository: ProductRepository) => new CreateProductUsecase(repository),
@@ -60,6 +67,7 @@ import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-
             inject: [ProductRepository]
         },
 
+        // Orders
         {
             provide: CreateOrderUsecase,
             useFactory: (orderRepository: OrderRepository, productRepository: ProductRepository, customerRepository: CustomerRepository) => {
@@ -67,7 +75,13 @@ import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-
             },
             inject: [OrderRepository, ProductRepository, CustomerRepository]
         },
+        {
+            provide: CancelOrderUsecase,
+            useFactory: (orderRepository: OrderRepository) => new CancelOrderUsecase(orderRepository),
+            inject: [OrderRepository]
+        },
 
+        // Customers
         {
             provide: CreateCustomerUsecase,
             useFactory: (repository: CustomerRepository) => new CreateCustomerUsecase(repository),
@@ -78,8 +92,14 @@ import { GetByIdCustomerUsecase } from "../application/use-case/customer/get-by-
             useFactory: (repository: CustomerRepository) => new GetByIdCustomerUsecase(repository),
             inject: [CustomerRepository]
         },
+        {
+            provide: UpdateCustomerUsecase,
+            useFactory: (repository: CustomerRepository) => new UpdateCustomerUsecase(repository),
+            inject: [CustomerRepository]
+        },
 
 
+        // Payments
         {
             provide: CreatePaymentUsecase,
             useFactory: (paymentRepository: PaymentRepository, orderRepository: OrderRepository) => new CreatePaymentUsecase(paymentRepository, orderRepository),
