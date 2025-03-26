@@ -1,12 +1,12 @@
-import { Injectable, NotFoundException } from "@nestjs/common";
+import { NotFoundException } from "@nestjs/common";
 import { Repository } from "typeorm";
 import { ProductEntity } from "../entities/product.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { ProductRepositoryPort } from "../../../../domain/ports/product.port";
 import { Product } from "../../../../domain/entities/product.entity";
 import { ProductMapper } from "../mappers/product.mapper";
-import { OutputFilterProductDto } from "../../../../application/dtos/product/filter.product.dto";
 import { ProductFilterImpl } from "../../../../domain/interfaces/product.interface";
+import { PaginationImpl } from "../../../../domain/interfaces/pagination.interface";
 
 
 export class ProductRepository implements ProductRepositoryPort {
@@ -19,7 +19,7 @@ export class ProductRepository implements ProductRepositoryPort {
         await this.repository.save(input);
     }
 
-    async filter(params: ProductFilterImpl): Promise<OutputFilterProductDto> {
+    async filter(params: ProductFilterImpl): Promise<PaginationImpl> {
         const { currentPage, pageSize, ...rest } = params
 
         const [response, total] = await this.repository.findAndCount({
