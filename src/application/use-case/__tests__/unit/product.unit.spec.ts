@@ -3,12 +3,14 @@ import { InputCreateProductDto } from "../../../dtos/product/create.product.dto"
 import { InputFilterProductDto } from "../../../dtos/product/filter.product.dto";
 import { CreateProductUsecase } from "../../product/create.product.use-case";
 import { FilterProductUsecase } from "../../product/filter.product.use-case";
+import { UpdateProductUsecase } from "../../product/update.product.use-case";
 
 const MockRepository = () => {
     return {
         create: jest.fn(),
         filter: jest.fn(),
-        getById: jest.fn()
+        getById: jest.fn(),
+        update: jest.fn()
     }
 }
 
@@ -74,5 +76,54 @@ describe("Unit test product use cases", () => {
         expect(productRepository.filter).toHaveBeenCalledWith(input);
 
         expect(output).toEqual([[], 0]);
-    })
+    });
+
+    it("should update a product", async () => {
+        const updateProductUsecase = new UpdateProductUsecase(productRepository);
+
+        const product = new Product({
+            name: "integration test - creating a product",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        productRepository.getById.mockResolvedValue(product);
+
+        let input: any = {
+            id: product.getId(),
+            name: "integration test - creating a tv"
+        };
+
+        let output = await updateProductUsecase.execute(input);
+
+        expect(output.name).toBe("integration test - creating a tv");
+
+        input = {
+            id: product.getId(),
+            description: "tv diferente"
+        };
+
+        output = await updateProductUsecase.execute(input);
+
+        expect(output.description).toBe("tv diferente");
+
+        input = {
+            id: product.getId(),
+            price: 2000
+        };
+
+        output = await updateProductUsecase.execute(input);
+
+        expect(output.price).toBe(2000);
+
+        input = {
+            id: product.getId(),
+            stock: 5
+        };
+
+        output = await updateProductUsecase.execute(input);
+
+        expect(output.stock).toBe(5);
+    });
 });

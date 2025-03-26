@@ -9,4 +9,6 @@ export interface ProductRepositoryPort {
     filter(params: ProductFilterImpl): Promise<PaginationImpl>;
 
     getById(productId: string): Promise<Product>;
+
+    update(product: Product): Promise<Product>;
 }
