@@ -5,3 +5,11 @@ export interface OrderImpl {
     createdAt?: string;
     updatedAt?: string;
 }
+
+export interface OrderFilterImpl {
+    pageSize: number;
+    currentPage: number;
+    id?: string;
+    customerId?: string;
+    status?: string;
+}

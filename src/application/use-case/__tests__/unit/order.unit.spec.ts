@@ -4,13 +4,15 @@ import { Product } from "../../../../domain/entities/product.entity";
 import { InputCreateOrderDto } from "../../../dtos/order/create.order.dto";
 import { CancelOrderUsecase } from "../../order/cancel.order.use-case";
 import { CreateOrderUsecase } from "../../order/create.order.use-case";
+import { FilterOrderUsecase } from "../../order/filter.order.use-case";
 import { GetByIdOrderUsecase } from "../../order/get-by-id.order.use-case";
 
 const OrderMockRepository = () => {
     return {
         create: jest.fn(),
         getById: jest.fn(),
-        cancel: jest.fn()
+        cancel: jest.fn(),
+        filter: jest.fn()
     }
 }
 
@@ -168,4 +170,68 @@ describe("Unit test order use cases", () => {
             updatedAt: order.getUpdatedAt()
         });
     });
+
+    it("should filter orders", async () => {
+        const filterOrderUseCase = new FilterOrderUsecase(orderRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+        order.addProduct(product);
+
+        const order2 = new Order({
+            customerId: customer.getId()
+        });
+        order.addProduct(product);
+
+        const mockOrders: Order[] = [
+            order,
+            order2
+        ];
+
+        orderRepository.filter.mockResolvedValue([mockOrders, mockOrders.length]);
+
+        let input = {
+            currentPage: 1,
+            pageSize: 2
+        };
+
+        let output = await filterOrderUseCase.execute(input);
+
+        expect(orderRepository.filter).toHaveBeenCalledWith(input);
+        expect(orderRepository.filter).toHaveBeenCalledTimes(1);
+
+        expect(output).toEqual([mockOrders, mockOrders.length]);
+    });
+
+    it("should return a empty queue when there is no product", async () => {
+        const filterOrderUseCase = new FilterOrderUsecase(orderRepository);
+
+        orderRepository.filter.mockResolvedValue([[], 0]);
+
+        let input = {
+            currentPage: 1,
+            pageSize: 2
+        };
+
+        let output = await filterOrderUseCase.execute(input);
+
+        expect(orderRepository.filter).toHaveBeenCalledWith(input);
+
+        expect(output).toEqual([[], 0]);
+    })
 });
