@@ -1,7 +1,7 @@
 import { Transform } from "class-transformer";
-import { IsNumber, IsOptional, IsPositive, IsString } from "class-validator";
+import { IsNumber, IsOptional, IsPositive, IsString, IsUUID } from "class-validator";
 
-export class FilterProductDto {
+export class FilterOrderDto {
 
     @IsNumber()
     @IsPositive()
@@ -14,24 +14,14 @@ export class FilterProductDto {
     currentPage: number = 1;
 
     @IsOptional()
-    @IsString()
+    @IsUUID()
     id?: string;
 
     @IsOptional()
-    @IsString()
-    name?: string;
+    @IsUUID()
+    customerId?: string;
 
     @IsOptional()
     @IsString()
-    description?: string;
-
-    @IsOptional()
-    @IsNumber()
-    @Transform(({ value }) => Number(value))
-    price?: number;
-
-    @IsOptional()
-    @IsNumber()
-    @Transform(({ value }) => Number(value))
-    stock?: number;
+    status?: string;
 }

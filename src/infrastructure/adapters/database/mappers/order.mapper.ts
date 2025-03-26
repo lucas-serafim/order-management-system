@@ -27,4 +27,8 @@ export class OrderMapper {
 
         return orderEntity;
     }
+
+    static toDomainList(orders: OrderEntity[]): Order[] {
+        return orders.map(current => new Order(current));
+    }
 }

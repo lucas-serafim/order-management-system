@@ -27,6 +27,8 @@ import { CancelOrderUsecase } from "../application/use-case/order/cancel.order.u
 import { CancelOrderController } from "./adapters/web/controllers/order/cancel.order.controller";
 import { GetByIdOrderUsecase } from "../application/use-case/order/get-by-id.order.use-case";
 import { GetByIdOrderController } from "./adapters/web/controllers/order/get-by-id.order.controller";
+import { FilterOrderController } from "./adapters/web/controllers/order/filter.order.controller";
+import { FilterOrderUsecase } from "../application/use-case/order/filter.order.use-case";
 
 @Module({
     imports: [
@@ -45,6 +47,7 @@ import { GetByIdOrderController } from "./adapters/web/controllers/order/get-by-
         CreateOrderController,
         CancelOrderController,
         GetByIdOrderController,
+        FilterOrderController,
 
         CreateCustomerController,
         GetByIdCustomerController,
@@ -86,6 +89,11 @@ import { GetByIdOrderController } from "./adapters/web/controllers/order/get-by-
         {
             provide: GetByIdOrderUsecase,
             useFactory: (orderRepository: OrderRepository) => new GetByIdOrderUsecase(orderRepository),
+            inject: [OrderRepository]
+        },
+        {
+            provide: FilterOrderUsecase,
+            useFactory: (orderRepository: OrderRepository) => new FilterOrderUsecase(orderRepository),
             inject: [OrderRepository]
         },
 

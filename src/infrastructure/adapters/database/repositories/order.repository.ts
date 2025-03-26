@@ -5,6 +5,9 @@ import { OrderEntity } from "../entities/order.entity";
 import { InjectRepository } from "@nestjs/typeorm";
 import { NotFoundException } from "@nestjs/common";
 import { OrderMapper } from "../mappers/order.mapper";
+import { OrderFilterImpl } from "../../../../domain/interfaces/order.interface";
+import { PaginationImpl } from "../../../../domain/interfaces/pagination.interface";
+import { OrderStatusEnum } from "../../../../domain/enums/order-status.enum";
 
 export class OrderRepository implements OrderRepositoryPort {
 
@@ -36,5 +39,24 @@ export class OrderRepository implements OrderRepositoryPort {
         await this.repository.update({
             id: order.getId()
         }, { status });
+    }
+
+    async filter(params: OrderFilterImpl): Promise<PaginationImpl> {
+        const { currentPage, pageSize, ...rest } = params;
+
+        const [response, total] = await this.repository.findAndCount({
+            skip: (currentPage - 1) * pageSize,
+            take: pageSize,
+            where: rest
+        });
+
+        const orders = OrderMapper.toDomainList(response);
+
+        return {
+            items: orders,
+            currentPage,
+            pageSize,
+            total
+        }
     }
 }

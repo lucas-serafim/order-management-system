@@ -18,7 +18,7 @@ export class OrderEntity {
     totalAmount: number;
 
     @Column("varchar")
-    status: OrderStatusEnum;
+    status: string;
 
     @Column("varchar")
     createdAt: string;
