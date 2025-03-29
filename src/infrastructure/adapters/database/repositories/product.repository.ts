@@ -50,4 +50,8 @@ export class ProductRepository implements ProductRepositoryPort {
 
         return ProductMapper.toDomain(response);
     }
+
+    async update(product: Product): Promise<Product> {
+        throw new Error("not implemented")
+    }
 }

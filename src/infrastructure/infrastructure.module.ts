@@ -29,6 +29,8 @@ import { GetByIdOrderUsecase } from "../application/use-case/order/get-by-id.ord
 import { GetByIdOrderController } from "./adapters/web/controllers/order/get-by-id.order.controller";
 import { FilterOrderController } from "./adapters/web/controllers/order/filter.order.controller";
 import { FilterOrderUsecase } from "../application/use-case/order/filter.order.use-case";
+import { PaymentGatewayPort } from "../domain/ports/payment-gateway.port";
+import { StripePaymentService } from "./adapters/stripe/services/payment.service";
 
 @Module({
     imports: [
@@ -60,6 +62,8 @@ import { FilterOrderUsecase } from "../application/use-case/order/filter.order.u
         OrderRepository,
         CustomerRepository,
         PaymentRepository,
+
+        StripePaymentService,
 
         // Products
         {
@@ -118,8 +122,10 @@ import { FilterOrderUsecase } from "../application/use-case/order/filter.order.u
         // Payments
         {
             provide: CreatePaymentUsecase,
-            useFactory: (paymentRepository: PaymentRepository, orderRepository: OrderRepository) => new CreatePaymentUsecase(paymentRepository, orderRepository),
-            inject: [PaymentRepository, OrderRepository]
+            useFactory: (paymentRepository: PaymentRepository, orderRepository: OrderRepository, paymentGateway: PaymentGatewayPort) => {
+                return new CreatePaymentUsecase(paymentRepository, orderRepository, paymentGateway);
+            },
+            inject: [PaymentRepository, OrderRepository, StripePaymentService]
         }
     ]
 })

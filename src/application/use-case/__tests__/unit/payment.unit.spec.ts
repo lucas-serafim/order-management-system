@@ -1,3 +1,4 @@
+import { randomUUID } from "node:crypto";
 import { Customer } from "../../../../domain/entities/customer.entity";
 import { Order } from "../../../../domain/entities/order.entity";
 import { Product } from "../../../../domain/entities/product.entity";
@@ -13,16 +14,26 @@ const PaymentMockRepository = () => {
 const OrderMockRepository = () => {
     return {
         create: jest.fn(),
-        getById: jest.fn()
+        getById: jest.fn(),
+        cancel: jest.fn(),
+        filter: jest.fn(),
+        update: jest.fn(),
+    }
+}
+
+const PaymentGatewayMock = () => {
+    return {
+        createPaymentIntent: jest.fn()
     }
 }
 
 describe("Unit test payment use cases", () => {
     const paymentRepository = PaymentMockRepository();
     const orderRepository = OrderMockRepository();
+    const paymentGateway = PaymentGatewayMock();
 
     it("should create a payment", async () => {
-        const createPaymentUsecase = new CreatePaymentUsecase(paymentRepository, orderRepository);
+        const createPaymentUsecase = new CreatePaymentUsecase(paymentRepository, orderRepository, paymentGateway);
 
         const customer = new Customer({
             name: "joao",
@@ -46,9 +57,14 @@ describe("Unit test payment use cases", () => {
 
         orderRepository.getById.mockResolvedValue(order);
 
+        const transactionId = randomUUID();
+
+        paymentGateway.createPaymentIntent.mockResolvedValue({ transactionId })
+
         const input = {
             orderId: order.getId(),
-            paymentMethod: PaymentMethodEnum.debit_card
+            paymentMethod: PaymentMethodEnum.debit_card,
+            transactionId
         }
 
         const output = await createPaymentUsecase.execute(input);
@@ -58,7 +74,7 @@ describe("Unit test payment use cases", () => {
             orderId: input.orderId,
             status: "PENDING",
             paymentMethod: input.paymentMethod,
-            transactionId: ""
+            transactionId: input.transactionId
         })
     });
 });
