@@ -10,5 +10,5 @@ export interface ProductRepositoryPort {
 
     getById(productId: string): Promise<Product>;
 
-    update(product: Product): Promise<Product>;
+    update(product: Product): Promise<void>;
 }

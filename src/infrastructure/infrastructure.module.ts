@@ -31,6 +31,8 @@ import { FilterOrderController } from "./adapters/web/controllers/order/filter.o
 import { FilterOrderUsecase } from "../application/use-case/order/filter.order.use-case";
 import { PaymentGatewayPort } from "../domain/ports/payment-gateway.port";
 import { StripePaymentService } from "./adapters/stripe/services/payment.service";
+import { UpdateProductController } from "./adapters/web/controllers/product/update.product.controller";
+import { UpdateProductUsecase } from "../application/use-case/product/update.product.use-case";
 
 @Module({
     imports: [
@@ -45,6 +47,7 @@ import { StripePaymentService } from "./adapters/stripe/services/payment.service
     controllers: [
         CreateProductController,
         FilterProductController,
+        UpdateProductController,
 
         CreateOrderController,
         CancelOrderController,
@@ -74,6 +77,11 @@ import { StripePaymentService } from "./adapters/stripe/services/payment.service
         {
             provide: FilterProductUsecase,
             useFactory: (repository: ProductRepository) => new FilterProductUsecase(repository),
+            inject: [ProductRepository]
+        },
+        {
+            provide: UpdateProductUsecase,
+            useFactory: (repository: ProductRepository) => new UpdateProductUsecase(repository),
             inject: [ProductRepository]
         },
 

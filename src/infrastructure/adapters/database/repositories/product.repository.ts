@@ -51,7 +51,16 @@ export class ProductRepository implements ProductRepositoryPort {
         return ProductMapper.toDomain(response);
     }
 
-    async update(product: Product): Promise<Product> {
-        throw new Error("not implemented")
+    async update(product: Product): Promise<void> {
+        const updateData = {
+            name: product.getName(),
+            description: product.getDescription(),
+            price: product.getPrice(),
+            stock: product.getStock()
+        }
+
+        await this.repository.update({
+            id: product.getId()
+        }, updateData);
     }
 }
