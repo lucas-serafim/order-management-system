@@ -28,4 +28,11 @@ export class StripePaymentService implements PaymentGatewayPort {
             transactionId: paymentIntent.id
         };
     }
+
+    async confirmPaymentIntent(transactionId: string): Promise<void> {
+        const privateKey = `${process.env.STRIPE_PRIVATE_KEY}`;
+        
+        const stripe = new Stripe(privateKey);
+        await stripe.paymentIntents.confirm(transactionId);
+    }
 }

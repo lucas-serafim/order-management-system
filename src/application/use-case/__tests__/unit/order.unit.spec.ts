@@ -20,7 +20,8 @@ const ProductMockRepository = () => {
     return {
         create: jest.fn(),
         filter: jest.fn(),
-        getById: jest.fn()
+        getById: jest.fn(),
+        update: jest.fn()
     }
 }
 

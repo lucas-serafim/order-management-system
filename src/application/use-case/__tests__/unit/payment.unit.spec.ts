@@ -4,10 +4,15 @@ import { Order } from "../../../../domain/entities/order.entity";
 import { Product } from "../../../../domain/entities/product.entity";
 import { PaymentMethodEnum } from "../../../../domain/enums/payment-method.enum";
 import { CreatePaymentUsecase } from "../../payment/create.payment.use-case";
+import { ConfirmPaymentUsecase } from "../../payment/confirm.payment.use-case";
+import { Payment } from "../../../../domain/entities/payment.entity";
+import { PaymentStatusEnum } from "../../../../domain/enums/payment-status.enum";
 
 const PaymentMockRepository = () => {
     return {
-        create: jest.fn()
+        create: jest.fn(),
+        getById: jest.fn(),
+        confirm: jest.fn()
     }
 }
 
@@ -23,7 +28,8 @@ const OrderMockRepository = () => {
 
 const PaymentGatewayMock = () => {
     return {
-        createPaymentIntent: jest.fn()
+        createPaymentIntent: jest.fn(),
+        confirmPaymentIntent: jest.fn()
     }
 }
 
@@ -77,4 +83,46 @@ describe("Unit test payment use cases", () => {
             transactionId: input.transactionId
         })
     });
+
+    it("should confirm a payment", async () => {
+        const confirmPaymentUsecase = new ConfirmPaymentUsecase(paymentRepository, paymentGateway);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+
+        order.addProduct(product);
+
+        const transactionId = randomUUID();
+
+        paymentGateway.createPaymentIntent.mockResolvedValue({ transactionId })
+
+        const payment =  new Payment({
+            id: randomUUID(),
+            orderId: order.getId(),
+            paymentMethod: PaymentMethodEnum.debit_card,
+            status: PaymentStatusEnum.pending,
+            transactionId
+        });
+
+        paymentRepository.getById.mockResolvedValue(payment);
+
+        const output = await confirmPaymentUsecase.execute(payment.getId());
+
+        expect(output.status).toBe("COMPLETED");
+    })
 });

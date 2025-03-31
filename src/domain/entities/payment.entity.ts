@@ -9,13 +9,13 @@ export class Payment {
     private orderId: string;
     private status: PaymentStatusEnum;
     private paymentMethod: PaymentMethodEnum;
-    private transactionId?: string;
+    private transactionId: string;
 
     constructor(params: PaymentImpl) {
         this.id = params.id ?? randomUUID();
         this.orderId = params.orderId;
-        this.status = params.status ?? PaymentStatusEnum.pending;
-        this.paymentMethod = params.paymentMethod;
+        this.status = PaymentStatusEnum[params.status?.toLowerCase() as keyof typeof PaymentStatusEnum] ?? PaymentStatusEnum.pending;
+        this.paymentMethod = PaymentMethodEnum[params.paymentMethod.toLowerCase() as keyof typeof PaymentMethodEnum];
         this.transactionId = params.transactionId ?? "";
     }
 
