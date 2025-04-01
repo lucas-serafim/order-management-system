@@ -13,7 +13,10 @@ export class ConfirmPaymentUsecase {
     async execute(paymentId: string): Promise<OutputConfirmPaymentDto> {
         const payment = await this.paymentRepository.getById(paymentId);
 
-        await this.paymentGateway.confirmPaymentIntent(payment.getTransactionId());
+        await this.paymentGateway.confirmPaymentIntent({
+            transactionId: payment.getTransactionId(),
+            paymentMethod: payment.getPaymentMethod()
+        });
 
         payment.completePayment();
 

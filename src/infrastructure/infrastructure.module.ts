@@ -33,6 +33,8 @@ import { PaymentGatewayPort } from "../domain/ports/payment-gateway.port";
 import { StripePaymentService } from "./adapters/stripe/services/payment.service";
 import { UpdateProductController } from "./adapters/web/controllers/product/update.product.controller";
 import { UpdateProductUsecase } from "../application/use-case/product/update.product.use-case";
+import { ConfirmPaymentController } from "./adapters/web/controllers/payment/confirm.payment.controller";
+import { ConfirmPaymentUsecase } from "../application/use-case/payment/confirm.payment.use-case";
 
 @Module({
     imports: [
@@ -58,7 +60,8 @@ import { UpdateProductUsecase } from "../application/use-case/product/update.pro
         GetByIdCustomerController,
         UpdateCustomerController,
 
-        CreatePaymentController
+        CreatePaymentController,
+        ConfirmPaymentController
     ],
     providers: [
         ProductRepository,
@@ -134,6 +137,13 @@ import { UpdateProductUsecase } from "../application/use-case/product/update.pro
                 return new CreatePaymentUsecase(paymentRepository, orderRepository, paymentGateway);
             },
             inject: [PaymentRepository, OrderRepository, StripePaymentService]
+        },
+        {
+            provide: ConfirmPaymentUsecase,
+            useFactory: (paymentRepository: PaymentRepository, paymentGateway: PaymentGatewayPort) => {
+                return new ConfirmPaymentUsecase(paymentRepository, paymentGateway);
+            },
+            inject: [PaymentRepository, StripePaymentService]
         }
     ]
 })

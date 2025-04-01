@@ -1,6 +1,6 @@
 import Stripe from "stripe"
 import { StripePaymentMethodEnum } from "../enums/payment-method.enum";
-import { CreatePaymentIntentImpl } from "../../../../domain/interfaces/payment-gateway.port";
+import { ConfirmPaymentIntentImpl, CreatePaymentIntentImpl } from "../../../../domain/interfaces/payment-gateway.port";
 import { PaymentGatewayPort } from "../../../../domain/ports/payment-gateway.port";
 
 const currency = "brl";
@@ -29,10 +29,18 @@ export class StripePaymentService implements PaymentGatewayPort {
         };
     }
 
-    async confirmPaymentIntent(transactionId: string): Promise<void> {
+    async confirmPaymentIntent(params: ConfirmPaymentIntentImpl): Promise<void> {
+        const { transactionId, paymentMethod } = params;
+
         const privateKey = `${process.env.STRIPE_PRIVATE_KEY}`;
+
+        const stripePaymentMethod = StripePaymentMethodEnum[paymentMethod as keyof typeof StripePaymentMethodEnum];
         
         const stripe = new Stripe(privateKey);
-        await stripe.paymentIntents.confirm(transactionId);
+        
+        await stripe.paymentIntents.confirm(transactionId, {
+            payment_method: stripePaymentMethod,
+            return_url: "https://www.example.com"
+        });
     }
 }
