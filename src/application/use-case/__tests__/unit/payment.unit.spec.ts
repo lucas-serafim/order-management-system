@@ -7,6 +7,7 @@ import { CreatePaymentUsecase } from "../../payment/create.payment.use-case";
 import { ConfirmPaymentUsecase } from "../../payment/confirm.payment.use-case";
 import { Payment } from "../../../../domain/entities/payment.entity";
 import { PaymentStatusEnum } from "../../../../domain/enums/payment-status.enum";
+import { GetByIdPaymentUsecase } from "../../payment/get-by-id.payment.use-case";
 
 const PaymentMockRepository = () => {
     return {
@@ -124,5 +125,51 @@ describe("Unit test payment use cases", () => {
         const output = await confirmPaymentUsecase.execute(payment.getId());
 
         expect(output.status).toBe("COMPLETED");
+    })
+
+    it("should get a payment by id", async () => {
+        const getByIdPaymentUsecase = new GetByIdPaymentUsecase(paymentRepository);
+
+        const customer = new Customer({
+            name: "joao",
+            email: "joao@joao.com",
+            phone: "1199999999",
+            address: "rua do joao numero 110"
+        });
+
+        const product = new Product({
+            name: "tv",
+            description: "tv",
+            price: 1500,
+            stock: 12
+        });
+
+        const order = new Order({
+            customerId: customer.getId()
+        });
+
+        order.addProduct(product);
+
+        const transactionId = randomUUID();
+
+        const payment =  new Payment({
+            id: randomUUID(),
+            orderId: order.getId(),
+            paymentMethod: PaymentMethodEnum.debit_card,
+            status: PaymentStatusEnum.pending,
+            transactionId
+        });
+
+        paymentRepository.getById.mockResolvedValue(payment);
+
+        const output = await getByIdPaymentUsecase.execute(payment.getId());
+
+        expect(output).toEqual({
+            id: expect.any(String),
+            orderId: payment.getOrderId(),
+            paymentMethod: payment.getPaymentMethod(),
+            status: payment.getStatus(),
+            transactionId: payment.getTransactionId()
+        })
     })
 });
